@@ -12,7 +12,7 @@ import ssl
 servicePublicId="da8488da9b5df26d32ca58c6d6a7973bedd5d98ad052d62b468d3b04b080ea25"
 
 # Month
-expectMonth = "2020-11"
+expectMonth = "2021-09"
 
 # Read locations from json files.
 def read_location_json(filename):
@@ -27,7 +27,7 @@ def fetch_available_times(loc):
 	ctx = ssl.create_default_context()
 	ctx.check_hostname = False
 	ctx.verify_mode = ssl.CERT_NONE
-	url = "https://onlinebusiness.icbc.com/qmaticwebbooking/rest/schedule/branches/{0}/dates;servicePublicId={1};customSlotLength=15"
+	url = "https://onlinebusiness.icbc.com/qmaticwebbooking/rest/schedule/branches/{0}/dates;servicePublicId={1};customSlotLength=40"
 	url =  url.format(loc['id'], servicePublicId)
 	response = urllib2.urlopen(url, context=ctx)
 	content = response.read()
@@ -41,12 +41,13 @@ def is_match(times, month):
 			return True
 	return False
 
-def send_notification(times, loc):
+def send_notification(times, loc, month):
 	# TODO: add notification to mobile or desktop.
 	make_bell_sound()
 	print 'Found match date at [', loc["name"],']'
 	print 'Available times'
 	for t in times:
+		if not t['date'].startswith(month): break
 		print t['date']
 
 # make a sound in your computer 
@@ -64,9 +65,9 @@ def main():
 		while True:
 			times = fetch_available_times(loc)
 			if is_match(times, expectMonth):
-				send_notification(times, loc)
+				send_notification(times, loc, expectMonth)
 				break
-			time.sleep(3)
+			time.sleep(30)
 			try_time += 1 
 			sys.stdout.write(".")
 			sys.stdout.flush()
