@@ -13,9 +13,16 @@
 
 ### 笔试刷新
 
-1. 修改期望刷新的月份
+1.1 修改期望刷新的月份
 
 在文件 knowledge_test.py 修改expectMonth.
+
+1.2 Change probe frequency 
+
+在文件 knowledge_test.py 修改 value of time.sleep(), unit is seconds
+
+1.3 Change wanted test positions list
+Change file locations.json
 
 2. 打开命令行直接运行：
 
