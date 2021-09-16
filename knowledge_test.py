@@ -12,7 +12,7 @@ import ssl
 servicePublicId="da8488da9b5df26d32ca58c6d6a7973bedd5d98ad052d62b468d3b04b080ea25"
 
 # Month
-expectMonth = "2021-09"
+expectMonth = "2021-08"
 
 # Read locations from json files.
 def read_location_json(filename):
@@ -67,7 +67,7 @@ def main():
 			if is_match(times, expectMonth):
 				send_notification(times, loc, expectMonth)
 				break
-			time.sleep(30)
+			time.sleep(10)
 			try_time += 1 
 			sys.stdout.write(".")
 			sys.stdout.flush()
