@@ -32,7 +32,7 @@ Change file locations.json
 
 ### 路考刷新
 
-Change value of examDate, lastName and licenseNumber to your own in method fetch_road_test
+Change value of examDate to your own in method fetch_road_test
 同上修改expectMonth后，运行:
 
 `python road_test.py {driverLastName} {licenceNumber} {keyword}`

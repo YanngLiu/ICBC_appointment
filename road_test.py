@@ -53,12 +53,12 @@ def make_bell_sound():
     os.system("say 'ICBC appointment found.'")
     os.system("say 'ICBC appointment found.'")
 
-def fetch_road_test(token,posID):
+def fetch_road_test(token,posID, driverLastName, licenceNumber):
     # json_body = '{"posIDs":[275,9,8,2,274,93,273,276,272,11,271,269,73,220,153,270,6,256,252,1,277,214,113,114,3,268],'
     # json_body = '{"aPosID":93,'
     json_body = '{"aPosID":' + str(posID) + ','
     json_body += '"examType":"5-R-1","examDate":"2021-09-23","ignoreReserveTime":false,"prfDaysOfWeek":"[0,1,2,3,4,5,6]",'
-    json_body += '"prfPartsOfDay":"[0,1]","lastName":"LIU","licenseNumber":"4676455"}'
+    json_body += '"prfPartsOfDay":"[0,1]","lastName":"' + driverLastName+'","licenseNumber":"'+licenceNumber+'"}'
 
     headers = {"Accept" : "application/json, text/plain, */*", "Content-Type" : "application/json", "Referer" : "https://onlinebusiness.icbc.com/webdeas-ui/booking",\
              "User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36", \
@@ -142,7 +142,8 @@ def getToken(user):
 
 def main():
     print 'start detecting appointments in', expectMonths, '...'
-    token = getToken((sys.argv[1],  sys.argv[2], sys.argv[3]))
+    driverLastName, licenceNumber = sys.argv[1], sys.argv[2]
+    token = getToken((driverLastName, licenceNumber, sys.argv[3]))
     st = time.time()
     end = time.time()
     locations = read_location_json('road_test_positions.json')
@@ -156,7 +157,7 @@ def main():
             break
         broken = False
         for posId in POS_IDS:
-            appointments = fetch_road_test(token, posId)
+            appointments = fetch_road_test(token, posId, driverLastName, licenceNumber)
             if appointments and appointments[0] == None:
                 broken = True
                 break
